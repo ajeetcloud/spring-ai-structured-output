@@ -1,1 +1,0 @@
-# spring-ai-structured-output
