@@ -1,5 +1,6 @@
 package org.springaistructuredoutput.controller;
 
+import org.springaistructuredoutput.model.MoviesRes;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
@@ -19,15 +20,25 @@ public class BasicController {
                 .defaultSystem("Please prioritise context information for answering queries. Give short, concise and to the point answers.")
                 .defaultToolCallbacks(tools)
                 .build();
-
     }
 
-    @GetMapping("/chat")
-    public String chat(@RequestParam String query) {
+    @GetMapping("/normal-response")
+    public String getMovieText(@RequestParam String query) {
         PromptTemplate promptTemplate = new PromptTemplate(query);
         Prompt prompt = promptTemplate.create();
-        ChatClient.CallResponseSpec res = chatClient.prompt(prompt).call();
+        String response = chatClient.prompt(prompt).call().content();
 
-        return  res.content();
+        return response;
+    }
+
+    @GetMapping("/structured-response")
+    public MoviesRes getMovieStructured(@RequestParam String query) {
+        PromptTemplate promptTemplate = new PromptTemplate(query);
+        Prompt prompt = promptTemplate.create();
+        MoviesRes moviesRes = chatClient.prompt(prompt)
+                .call()
+                .entity(MoviesRes.class);
+
+        return moviesRes;
     }
 }
