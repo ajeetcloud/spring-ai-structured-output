@@ -14,11 +14,10 @@ public class BasicController {
 
     private final ChatClient chatClient;
 
-    public BasicController(ChatClient.Builder chatClientBuilder, ToolCallbackProvider tools) {
+    public BasicController(ChatClient.Builder chatClientBuilder) {
 
         this.chatClient = chatClientBuilder
                 .defaultSystem("Please prioritise context information for answering queries. Give short, concise and to the point answers.")
-                .defaultToolCallbacks(tools)
                 .build();
     }
 
